@@ -142,6 +142,37 @@ function deleteLetter() {
 // TODO: Implement submitGuess function
 function submitGuess() {
     // Your code here!
+    if (currentTile !== 5) {
+        // Row is not full - need exactly 5 letters
+        alert("Please enter 5 letters!");
+        return; // exit early
+    }
+
+    const currentRowElement = rows[currentRow];
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    let guess = '';
+
+    tiles.forEach(tile => {
+        guess += tile.textContent;
+    });
+
+    logDebug(`Guess: ${guess}, Target: ${TARGET_WORD}`);
+    checkGuess(guess, tiles);
+
+    currentRow++;
+    currentTile = 0;
+
+    if (guess === TARGET_WORD) {
+        gameOver = true; // player won!
+        setTimeout(() => alert("You won! :)"), 500);
+        logDebug("Won");
+    } else if (currentRow >= 6) {
+        gameOver = true; // player used all 6 rows - game over
+        setTimeout(() => alert("You Have Lost! :("), 500);
+        logDebug("Lost");
+    }
+    logDebug("continuing");
+
 }
 
 // TODO: Implement checkGuess function (the hardest part!)
