@@ -68,28 +68,67 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
 
 // TODO: Add keyboard event listener
-// document.addEventListener("keydown", (event) => {
-//     // Your code here!
-// });
+document.addEventListener("keydown", (event) => {
+    // Your code here!
+    const input = event.key.toUpperCase()
+    // logDebug(input);
+
+    if (gameOver==true) {
+        logDebug("Game Over");
+    } else if (input == "BACKSPACE") {
+        deleteLetter();
+        logDebug("letter deleted");
+    } else if (input == "ENTER") {
+        submitGuess();
+        logDebug("guess submitted");
+    } else if (/^[a-z]$/i.test(input)) {
+        addLetter(input);
+        // logDebug("Letter Added");
+    } else {
+        logDebug(input);
+    }
+    
+});
 
 // TODO: Implement addLetter function
-// function addLetter(letter) {
-//     // Your code here!
-// }
+function addLetter(letter) {
+    // Your code here!
+    logDebug(`🎯 addLetter("${letter}") called`, 'info');
+    if (currentTile >= 5) {
+        // Row is full, can't add more letters
+        logDebug("Error, Row Full")
+        return; // exit the function early
+    }
+
+    // Get the current row (remember: currentRow is a variable you have)
+    const rowElement = rows[currentRow]; // rows is an array of row elements
+
+    // Get all tiles in that row
+    const tiles = rowElement.querySelectorAll('.tile'); // returns an array-like list
+
+    const specificTile = tiles[currentTile];
+    specificTile.textContent = letter;
+    specificTile.classList.add('filled');
+
+    logDebug(`${letter} added to tile ${currentTile}`);
+    logDebug(`current word: ${getCurrentWord()}`);
+
+    currentTile++;
+}
 
 // TODO: Implement deleteLetter function  
-// function deleteLetter() {
-//     // Your code here!
-// }
+function deleteLetter() {
+    // Your code here!
+}
 
 // TODO: Implement submitGuess function
-// function submitGuess() {
-//     // Your code here!
-// }
+function submitGuess() {
+    // Your code here!
+}
 
 // TODO: Implement checkGuess function (the hardest part!)
-// function checkGuess(guess, tiles) {
-//     // Your code here!
-//     // Remember: handle duplicate letters correctly
-//     // Return the result array
-// }
+function checkGuess(guess, tiles) {
+    // Your code here!
+    // Remember: handle duplicate letters correctly
+    // Return the result array
+}
