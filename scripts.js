@@ -77,13 +77,10 @@ document.addEventListener("keydown", (event) => {
         logDebug("Game Over");
     } else if (input == "BACKSPACE") {
         deleteLetter();
-        logDebug("letter deleted");
     } else if (input == "ENTER") {
         submitGuess();
-        logDebug("guess submitted");
     } else if (/^[a-z]$/i.test(input)) {
         addLetter(input);
-        // logDebug("Letter Added");
     } else {
         logDebug(input);
     }
@@ -119,6 +116,27 @@ function addLetter(letter) {
 // TODO: Implement deleteLetter function  
 function deleteLetter() {
     // Your code here!
+    logDebug(`🗑️ deleteLetter() called`, 'info');
+    if (currentTile <= 0) {
+        // No letters in current row
+        logDebug("Error, There are no letters to delete")
+        return;
+    }
+    currentTile--;
+
+    const currentRowElement = rows[currentRow];
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    const tileToDelete = tiles[currentTile];
+    const letterBeingDeleted = tileToDelete.textContent;
+
+    // Clear the tile
+    tileToDelete.textContent = ''; // empty string removes the letter
+    tileToDelete.classList.remove('filled'); // remove the styling class
+
+    
+
+    logDebug(`Deleting letter ${letterBeingDeleted}`);
+    logDebug(`current word: ${getCurrentWord()}`);
 }
 
 // TODO: Implement submitGuess function
