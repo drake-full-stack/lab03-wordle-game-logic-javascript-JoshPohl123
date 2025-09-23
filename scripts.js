@@ -1,5 +1,6 @@
 // ===== GAME STATE VARIABLES =====
-const TARGET_WORD = "WORDS";  // Our secret word for testing
+const WORD_LIST = ["WORDS", "REACT", "BASIC", "HELLO", "WORLD"];
+const TARGET_WORD = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
 let currentRow = 0;           // Which row we're filling (0-5)
 let currentTile = 0;          // Which tile in the row (0-4)
 let gameOver = false;         // Is the game finished?
@@ -177,7 +178,55 @@ function submitGuess() {
 
 // TODO: Implement checkGuess function (the hardest part!)
 function checkGuess(guess, tiles) {
-    // Your code here!
-    // Remember: handle duplicate letters correctly
-    // Return the result array
+    logDebug(`🔍 Starting analysis for "${guess}"`, 'info');
+    
+    // TODO: Split TARGET_WORD and guess into arrays
+    const target = TARGET_WORD.split('');
+    const guessArray = guess.split('');
+    const result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+
+    logDebug(target);
+    logDebug(guessArray);
+    
+    // STEP 1: Find exact matches
+    for (let i = 0; i < 5; i++) {
+        if (target[i] === guessArray[i]) {
+            result[i] = 'correct';
+            // TODO: mark both target[i] and guessArray[i] as used (null)
+            target[i] = null;
+            guessArray[i] = null;
+            tiles[i].className = 'tile correct';
+        }
+    }
+
+    logDebug("First Round");
+    logDebug(`Target: ${target}`);
+    logDebug(`Guess: ${guessArray}`);
+    logDebug(`Results: ${result}`);
+    
+    // STEP 2: Find wrong position matches  
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] !== null) { // only check unused letters
+            // TODO: look for guessArray[i] in remaining target letters
+            // TODO: if found, mark as 'present' and set target position to null
+            if (target.includes(guessArray[i])) {
+                logDebug(guessArray[i]);
+                result[i] = 'present';
+                tIndex = target.indexOf(guessArray[i]);
+                target[tIndex] = null;
+                tiles[i].className = 'tile present';
+                logDebug(`${guessArray[i]} is present`)
+            } else {
+                tiles[i].className = 'tile absent';
+            }
+        }
+    }
+
+    logDebug("Second Round");
+    logDebug(`Target: ${target}`);
+    logDebug(`Guess: ${guessArray}`);
+    logDebug(`Results: ${result}`);
+    
+    // TODO: Apply CSS classes to tiles -- we'll do this in the next step
+    return result;
 }
